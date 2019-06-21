@@ -10,7 +10,7 @@ var SECRET_KEY = 'fGLes8qGvGrntH1Cx75hnSXoGK5dgmcN'
 var client = new AipNlpClient(APP_ID, API_KEY, SECRET_KEY);
 
 
-var text = "张飞";
+var text = "a加上b";
 
 // 调用依存句法分析
 client.depparser(text).then(function(result) {
