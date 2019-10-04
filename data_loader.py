@@ -44,7 +44,7 @@ class DataLoader(object):
         sentences = []
         tags = []
 
-        with open(sentences_file, 'r') as file:
+        with open(sentences_file, 'r', encoding='utf-8') as file:
             for line in file:
                 # replace each token by its index
                 tokens = self.tokenizer.tokenize(line.strip())
