@@ -33,11 +33,11 @@ parser.add_argument('--loss_scale', type=float, default=0,
                              "Positive power of 2: static loss scaling value.\n")
 
 
-def train(model, data_iterator, optimizer, scheduler, params):
+def train(model, data_iterator, optimizer, params):
     """Train the model on `steps` batches"""
     # set model to training mode
     model.train()
-    scheduler.step()
+    
 
     # a running average object for loss
     loss_avg = utils.RunningAverage()
@@ -95,7 +95,7 @@ def train_and_evaluate(model, train_data, val_data, optimizer, scheduler, params
         # data iterator for training
         train_data_iterator = data_loader.data_iterator(train_data, shuffle=True)
         # Train for one epoch on training set
-        train(model, train_data_iterator, optimizer, scheduler, params)
+        train(model, train_data_iterator, optimizer, params)
 
         # data iterator for evaluation
         train_data_iterator = data_loader.data_iterator(train_data, shuffle=False)
@@ -107,6 +107,9 @@ def train_and_evaluate(model, train_data, val_data, optimizer, scheduler, params
         params.eval_steps = params.val_steps
         val_metrics = evaluate(model, val_data_iterator, params, mark='Val')
         
+        # scheduler lr
+        scheduler.step()
+
         val_f1 = val_metrics['f1']
         improve_f1 = val_f1 - best_val_f1
 
