@@ -20,13 +20,19 @@ class DataLoader(object):
         self.seed = params.seed
         self.token_pad_idx = 0
 
+        """ tag相关 """
         tags = self.load_tags()
         self.tag2idx = {tag: idx for idx, tag in enumerate(tags)}
         self.idx2tag = {idx: tag for idx, tag in enumerate(tags)}
         params.tag2idx = self.tag2idx
         params.idx2tag = self.idx2tag
         self.tag_pad_idx = self.tag2idx['O']
-
+        """ 
+        ['O', 'B-ORG', 'I-PER', 'B-PER', 'I-LOC', 'I-ORG', 'B-LOC']
+        {'O': 0, 'B-ORG': 1, 'I-PER': 2, 'B-PER': 3, 'I-LOC': 4, 'I-ORG': 5, 'B-LOC': 6}
+        {0: 'O', 1: 'B-ORG', 2: 'I-PER', 3: 'B-PER', 4: 'I-LOC', 5: 'I-ORG', 6: 'B-LOC'}
+        0
+        """
         self.tokenizer = BertTokenizer.from_pretrained(bert_model_dir, do_lower_case=True)
 
     def load_tags(self):
@@ -36,6 +42,7 @@ class DataLoader(object):
             for tag in file:
                 tags.append(tag.strip())
         return tags
+        """ ['O', 'B-ORG', 'I-PER', 'B-PER', 'I-LOC', 'I-ORG', 'B-LOC'] """
 
     def load_sentences_tags(self, sentences_file, tags_file, d):
         """Loads sentences and tags from their corresponding files. 
